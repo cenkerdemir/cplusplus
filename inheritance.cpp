@@ -8,7 +8,7 @@ using namespace std;
 
 // Employee Class
 class Employee {
-    private:
+    protected:
         string name;
         double pay;
     public:
@@ -20,6 +20,12 @@ class Employee {
             name = empName;
             pay = payRate;
         }
+    
+        //destructor
+        ~Employee() {
+            
+        }
+    
         string getName() {
             return name;
         }
@@ -37,19 +43,47 @@ class Employee {
             stm << name << ": " << pay;
             return stm.str();
         }
+        double grossPay(int hours) {
+            return pay * hours;
+        }
 };
 
-//Manager Class
+//Manager Class derived from the Employee class
 class Manager : public Employee {
     private:
         bool salaried;
     public:
+        //default constructor
+        Manager() : salaried(true) {}
+    
         Manager(string manName, double payRate, bool isSalaried) : Employee(manName, payRate) {
-                salaried = isSalaried;
+            salaried = isSalaried;
         }
-    bool getSalaried() {
-        return salaried;
-    }
+    
+        //destructor
+        ~Manager() {
+            
+        }
+    
+        bool getSalaried() {
+            return salaried;
+        }
+        string toString() {
+            stringstream stm;
+            string salary;
+            if (salaried) {
+                salary = "Salaried";
+            }
+            else {
+                salary = "Hourly";
+            }
+            stm << name << ": " << pay
+            << ": " << salary << endl;
+            return stm.str();
+        }
+        double grossPay(int hours) {
+            return (salaried ? pay : (pay * hours));
+        }
 };
 
 
@@ -63,10 +97,10 @@ int main()
     
     cout << "Employee name: " << emp1.getName() << endl;
     cout << "Employee pay rate: " << emp1.getPay() << endl;
+    cout << "Employee gross pay: " << emp1.grossPay(42) << endl;
     
-    cout << "Manager name: " << man1.getName() << endl;
-    cout << "Manager pay: " << man1.getPay() << endl;
-    cout << "Salaried?: " << man1.getSalaried() << endl;
+    cout << man1.toString();
+    cout << man1.getName() << "'s gross pay: " << man1.grossPay(60) << endl;
     
     return 0;
 }
