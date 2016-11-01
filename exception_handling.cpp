@@ -1,4 +1,4 @@
-// exception handling
+// basic exception handling case
 
 #include <iostream>
 
